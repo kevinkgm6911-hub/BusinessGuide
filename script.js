@@ -1,10 +1,16 @@
-document.getElementById("startBtn").addEventListener("click", () => {
-  document.getElementById("questionnaire").classList.remove("hidden");
-});
+// Animate on scroll
+const observer = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target); // animate once
+      }
+    });
+  },
+  { threshold: 0.2 }
+);
 
-document.querySelectorAll(".answer").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const next = btn.dataset.next;
-    window.location.href = `resources/${next}.html`;
-  });
+document.querySelectorAll(".fade-in, .slide-up").forEach(el => {
+  observer.observe(el);
 });
