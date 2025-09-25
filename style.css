@@ -163,3 +163,16 @@ footer {
   color: #fff;
   font-size: 0.9rem;
 }
+
+/* Animations */
+.fade-in, .slide-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-out;
+}
+
+.fade-in.visible, .slide-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
