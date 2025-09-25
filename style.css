@@ -4,7 +4,17 @@ body {
   font-family: 'Inter', Arial, sans-serif;
   color: #111;
   background: #fff;
+  line-height: 1.6;
   text-align: center;
+}
+
+h1, h2, h3 {
+  margin: 0 0 1rem;
+  font-weight: 700;
+}
+
+p {
+  margin: 0 0 1.5rem;
 }
 
 /* Hero */
@@ -14,74 +24,142 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, #003d7e, #f58426);
+  color: #fff;
 }
 
 .hero h1 {
-  font-size: 4rem;
-  font-weight: 800;
-  margin: 0 0 1rem;
+  font-size: 3.5rem;
 }
 
 .hero p {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   max-width: 600px;
-  margin: 0 0 2rem;
-  line-height: 1.4;
 }
 
 .cta {
   display: inline-block;
-  background: #f58426; /* bright orange accent */
-  color: #fff;
-  padding: 1rem 2rem;
+  margin-top: 1.5rem;
+  background: #fff;
+  color: #003d7e;
+  padding: 0.9rem 1.8rem;
   font-weight: 600;
+  border-radius: 8px;
   text-decoration: none;
-  border-radius: 6px;
-  transition: background 0.3s;
+  transition: 0.3s;
+}
+.cta:hover {
+  background: #eee;
 }
 
-.cta:hover {
+/* About */
+.about {
+  padding: 5rem 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+/* Features */
+.features {
+  padding: 5rem 2rem;
+  background: #f9f9f9;
+}
+.features h2 {
+  margin-bottom: 3rem;
+}
+.feature-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  max-width: 1000px;
+  margin: auto;
+}
+.feature {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Benefits */
+.benefits {
+  padding: 5rem 2rem;
+  background: #fff;
+}
+.benefits ul {
+  list-style: none;
+  padding: 0;
+  max-width: 600px;
+  margin: auto;
+}
+.benefits li {
+  font-size: 1.1rem;
+  margin: 1rem 0;
+}
+
+/* CTA Banner */
+.cta-banner {
+  padding: 4rem 2rem;
+  background: #003d7e;
+  color: #fff;
+}
+.cta-banner .cta {
+  background: #f58426;
+  color: #fff;
+}
+.cta-banner .cta:hover {
   background: #d96e1e;
 }
 
-/* Statement section */
-.statement {
-  padding: 6rem 2rem;
+/* Testimonials */
+.testimonials {
+  padding: 5rem 2rem;
   background: #f9f9f9;
 }
-
-.statement h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-/* Resources section */
-.resources {
+.testimonial-grid {
   display: grid;
+  gap: 2rem;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 3rem;
-  padding: 6rem 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
+  max-width: 900px;
+  margin: auto;
 }
-
-.resource h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+.testimonial {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  font-style: italic;
 }
-
-.resource p {
-  font-size: 1rem;
-  line-height: 1.5;
+.testimonial span {
+  display: block;
+  margin-top: 1rem;
+  font-style: normal;
   color: #444;
+}
+
+/* FAQ */
+.faq {
+  padding: 5rem 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+.faq details {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: left;
+}
+.faq summary {
+  font-weight: 600;
+  cursor: pointer;
 }
 
 /* Footer */
 footer {
-  padding: 3rem 2rem;
+  padding: 2rem;
+  background: #111;
+  color: #fff;
   font-size: 0.9rem;
-  color: #666;
 }
