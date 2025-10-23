@@ -1,0 +1,16 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# React Router / client-side routes → serve index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# (optional) set dev behavior for Netlify CLI
+[dev]
+  framework = "vite"
+  command = "npm run dev"
+  targetPort = 5173
+  

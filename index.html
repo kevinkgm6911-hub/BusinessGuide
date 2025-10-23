@@ -1,4 +1,20 @@
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
+
+  <!-- Netlify hidden forms for detection -->
+<form name="contributor-application" netlify netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="contributor-application" />
+  <input name="name" />
+  <input name="email" />
+  <input name="focus" />
+  <textarea name="experience"></textarea>
+  <input name="bot-field" />
+</form>
+
+<form name="community-email" netlify netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="community-email" />
+  <input name="email" />
+  <input name="bot-field" />
+</form>
 </body>
