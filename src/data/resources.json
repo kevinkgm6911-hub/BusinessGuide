@@ -1,0 +1,86 @@
+[
+  {
+    "slug": "business-registration-checklist",
+    "title": "Business Registration Checklist",
+    "description": "Step-by-step guide to legally registering your side hustle.",
+    "category": "Legal",
+    "sections": [
+      {
+        "heading": "1. Choose Your Business Structure",
+        "text": "Decide whether your side hustle should be a sole proprietorship, LLC, or corporation. Each option has different **tax, liability, and paperwork** implications."
+      },
+      {
+        "heading": "2. Register with the State",
+        "text": "File the required formation documents with your state. This usually means Articles of Organization (LLC) or Articles of Incorporation (Corp). Fees range from $50–$500 depending on your state."
+      },
+      {
+        "heading": "3. Obtain an EIN",
+        "text": "An **Employer Identification Number (EIN)** is like a Social Security Number for your business. You can get one free in minutes from the IRS website. Even if you don’t plan to hire, an EIN is useful for opening a bank account."
+      },
+      {
+        "heading": "4. Apply for Business Licenses",
+        "text": "Depending on your industry, you may need permits (food handling, home occupation, sales tax ID). Check your city and state’s requirements."
+      },
+      {
+        "heading": "5. Open a Business Bank Account",
+        "text": "Keep your finances separate. Many banks offer free business checking for LLCs. This is crucial for protecting your liability."
+      }
+    ]
+  },
+  {
+    "slug": "startup-budget-template",
+    "title": "Startup Budget Template",
+    "description": "A practical framework to estimate costs, track expenses, and plan for profitability.",
+    "category": "Finance",
+    "sections": [
+      {
+        "heading": "1. Estimate Startup Costs",
+        "text": "List **everything needed before you launch**: equipment, website, licenses, initial marketing. Be realistic — most new entrepreneurs underestimate these."
+      },
+      {
+        "heading": "2. Track Monthly Expenses",
+        "text": "Break down fixed (rent, subscriptions) and variable (supplies, ads) expenses. This helps you identify your burn rate (how much cash you spend monthly)."
+      },
+      {
+        "heading": "3. Forecast Revenue",
+        "text": "Estimate conservative, expected, and optimistic revenue scenarios. This gives you guardrails for decision-making."
+      },
+      {
+        "heading": "4. Cash Flow Cushion",
+        "text": "Always plan for at least **3–6 months of runway**. Many businesses fail not because of profitability but because they run out of cash."
+      },
+      {
+        "heading": "Pro Tip",
+        "text": "Consider using a simple tool like [Wave Accounting](https://www.waveapps.com/) or [Google Sheets](https://docs.google.com/spreadsheets/) instead of expensive software until you scale."
+      }
+    ]
+  },
+  {
+    "slug": "side-hustle-starter-kit",
+    "title": "Side Hustle Starter Kit",
+    "description": "Everything you need to launch your first side hustle quickly.",
+    "category": "Productivity",
+    "sections": [
+      {
+        "heading": "1. Find Your Idea",
+        "text": "Start with your **skills, passions, and available time**. Ask yourself: What do people already ask me for help with? What do I enjoy that could be monetized?"
+      },
+      {
+        "heading": "2. Validate Fast",
+        "text": "Don’t build in a vacuum. Test demand with a simple landing page, pre-sales, or a small pilot. Your goal is to confirm people will pay, not just that they like the idea."
+      },
+      {
+        "heading": "3. Set Up Tools",
+        "text": "Use free or low-cost tools to stay lean:\n- Website → [Carrd](https://carrd.co/)\n- Design → [Canva](https://www.canva.com/)\n- Automation → [Zapier](https://zapier.com/)\n- Payments → [Stripe](https://stripe.com/)"
+      },
+      {
+        "heading": "4. Time Management",
+        "text": "Dedicate **consistent weekly hours**. Even 5 focused hours beats 20 scattered ones. Protect your hustle time like any other commitment."
+      },
+      {
+        "heading": "5. Build Your First Customer Base",
+        "text": "Leverage personal networks, online communities (Reddit, Discord, LinkedIn), and offer beta discounts in exchange for testimonials."
+      }
+    ]
+  }
+]
