@@ -1,0 +1,180 @@
+export const meta = {
+  title: "Validate Your Idea in 48 Hours",
+  slug: "validate-your-idea-48h",
+  category: "Start",
+  excerpt:
+    "Run a lean, two-day sprint to test if real people care about your idea—before you spend real time or money.",
+  description:
+    "A fast, low-risk validation sprint. You'll create a clear hypothesis, talk to potential customers, run a simple landing-page smoke test, and decide whether to iterate, pivot, or proceed.",
+  difficulty: "Beginner",
+  duration: "18 min",
+  thumbnail: "/images/resources/validate.png",
+  downloads: [
+    { label: "Customer Interview Script (.pdf)", file: "/downloads/idea-interview-script.pdf" },
+    { label: "Landing Page Smoke Test Template (.zip)", file: "/downloads/landing-smoketest.zip" }
+  ]
+}
+
+import TipBox from "@/components/TipBox";
+import DownloadCard from "@/components/DownloadCard";
+import Checklist from "@/components/Checklist";
+
+# Validate Your Idea in 48 Hours
+
+Don’t guess. **Validate.** This guide gives you a practical, two-day plan to test whether your idea solves a real problem for real people.
+
+**You’ll do four things:**
+1) Define a clear hypothesis  
+2) Talk to 5–10 potential customers  
+3) Run a simple **landing-page smoke test**  
+4) Decide: proceed, iterate, or pivot
+
+---
+
+## What “validation” actually means
+
+Validation doesn’t mean “everyone loves it.”  
+It means you have **evidence** that people experience the problem, your solution makes sense, and at least some are willing to **sign up, schedule, or pay** soon.
+
+<TipBox title="Evidence to look for">
+Screenshots of messages, interview notes, email signups, preorders, deposits, scheduled calls, waitlist opt-ins, or payments. Hype alone isn’t evidence.
+</TipBox>
+
+---
+
+## Day 1 — Morning (1–2 hours): Write your hypothesis
+
+A good hypothesis is specific and testable:
+
+> **For:** [who] with [problem]  
+> **We offer:** [solution promise]  
+> **We’ll know it’s working when:** [metric/threshold]
+
+**Example:**
+> For new freelancers who struggle to price projects,  
+> we offer a mini-toolkit + 30-min call that sets a price today.  
+> We’ll know it’s working when **10 people** join the waitlist in 48 hours.
+
+**Set a success threshold** now (e.g., 10 signups or 3 paid preorders).
+
+---
+
+## Day 1 — Midday (2–3 hours): Talk to 5–10 people
+
+Use problem-first interviews (no pitching for the first 80%).  
+Your job is to learn vocabulary, pains, and what they already tried.
+
+<DownloadCard
+  title="Customer Interview Script"
+  description="Short prompts that keep you problem-focused and avoid leading questions."
+  file="/downloads/idea-interview-script.pdf"
+  note="Keep interviews to ~15 minutes. Take notes verbatim."
+/>
+
+**Ask:**
+- “Tell me about the last time this was painful.”  
+- “What have you tried? What was missing?”  
+- “If a solution existed, what would make it a no-brainer?”  
+- “Would you be open to trying something this week?”
+
+<TipBox title="Signals to note">
+Recurring phrases, workarounds, spreadsheets, subscriptions they already pay for, time lost, money lost, and moments of frustration.
+</TipBox>
+
+---
+
+## Day 1 — Afternoon (2–3 hours): Build a smoke test
+
+Create a **one-page landing** that promises the **outcome**. Add a clear CTA (email waitlist, book a call, or pay deposit).
+
+<DownloadCard
+  title="Landing Page Smoke Test Template"
+  description="A minimal template with headline → problem → promise → proof → CTA. Includes HTML + a simple Netlify form."
+  file="/downloads/landing-smoketest.zip"
+  note="Hook the button to your waitlist form or Calendly."
+/>
+
+**What to include:**
+- Headline with outcome (“Get your first 5 paid clients in 30 days”)  
+- Pain points you heard in interviews  
+- What you’ll deliver (bullets)  
+- Simple proof (1 quote or before/after)  
+- One CTA (join waitlist / book call / $X deposit)
+
+---
+
+## Day 2 — Morning (1–2 hours): Put it in front of people
+
+Lightweight channels are fine:
+- DM the **exact people** you interviewed (ask permission to share)  
+- Post in 1–2 relevant forums/Discords/FB groups (follow rules)  
+- Email 10 friends/colleagues who match your audience  
+- Share on your personal socials (clear, specific)
+
+**Keep score** (next section).
+
+---
+
+## Day 2 — Afternoon: Measure, learn, decide
+
+Track results against your hypothesis threshold:
+
+| Metric | What “good” looks like (example) |
+|---|---|
+| Click-through rate (DMs/socials) | 5–15% |
+| Landing page conversion (to email / call) | 10–30% |
+| Call bookings | 2–5 in 48h |
+| Preorders / deposits | Any is strong; 3+ is great |
+
+<TipBox title="It’s okay if it’s small">
+A handful of qualified signups beats 500 random likes. You’re testing signal, not chasing virality.
+</TipBox>
+
+---
+
+## Decision time
+
+- **Proceed** if you hit or nearly hit your threshold and can talk to 3+ qualified leads.  
+- **Iterate** if people engage but stall at the CTA—your promise or price may be off.  
+- **Pivot** if you got crickets *and* interviews didn’t reveal pain.
+
+**Write down** what you’ll change next (audience, promise, price, channel).
+
+---
+
+## Optional — Concierge MVP (bonus)
+
+If 2–3 people are ready **now**, run a **concierge MVP** for one week:  
+deliver the outcome manually (no code), charge a small fee, and learn like crazy.
+
+- Scope: very specific outcome  
+- Price: fair for your effort (e.g., $49–$199)  
+- Goal: learn the steps you’d later automate or productize
+
+---
+
+<Checklist
+  title="48-Hour Validation — Action Steps"
+  storageKey="checklist:validate-48h:core"
+  items={[
+    { id: "hypo",   label: "Write a specific hypothesis + success threshold" },
+    { id: "book",   label: "Schedule 5–10 problem interviews" },
+    { id: "talk",   label: "Run interviews (no pitching for 80%)" },
+    { id: "page",   label: "Publish a one-page smoke test with 1 CTA" },
+    { id: "push",   label: "Share with 2 channels + interviewees" },
+    { id: "track",  label: "Track clicks, signups, bookings, or deposits" },
+    { id: "decide", label: "Decide: proceed, iterate, or pivot" }
+  ]}
+/>
+
+---
+
+## Next Steps
+
+- [Build Your First Offer](/resources/create-your-offer)  
+- [Pricing Your Services](/resources/pricing-your-service)  
+- Share your results (and landing page) in **#idea-validation** on Discord.
+
+---
+
+*Validation is a habit. Ship small tests, learn fast, and double down where people lean in.*

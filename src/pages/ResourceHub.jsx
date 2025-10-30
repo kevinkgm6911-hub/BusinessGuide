@@ -1,20 +1,24 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import resourcesData from "../data/resources.json";
+import { getAllResources } from "../lib/resources";
 
 export default function ResourceHub() {
+  const all = useMemo(() => getAllResources(), []);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const categories = ["All", "Legal", "Finance", "Marketing", "Tech", "Productivity"];
+  // Build category list dynamically from merged data
+  const categories = useMemo(() => {
+    const set = new Set(all.map((r) => r.category || "General"));
+    return ["All", ...Array.from(set).sort()];
+  }, [all]);
 
-  // Filter resources by category + search
-  const filteredResources = resourcesData.filter((res) => {
+  // Filter by category + search
+  const filteredResources = all.filter((res) => {
     const matchesCategory =
-      selectedCategory === "All" || res.category === selectedCategory;
-    const matchesSearch =
-      res.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      res.description.toLowerCase().includes(searchQuery.toLowerCase());
+      selectedCategory === "All" || (res.category || "General") === selectedCategory;
+    const hay = `${res.title} ${res.description} ${res.category}`.toLowerCase();
+    const matchesSearch = hay.includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -48,7 +52,7 @@ export default function ResourceHub() {
             className={`px-4 py-2 rounded-full text-sm font-semibold transition ${
               selectedCategory === cat
                 ? "bg-orange-600 text-white"
-                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                : "bg-gray-800 text-gray-300 hover:bg-gray-7 00"
             }`}
           >
             {cat}
@@ -65,11 +69,22 @@ export default function ResourceHub() {
               className="bg-gray-800 rounded-xl shadow-lg p-6 flex flex-col justify-between hover:shadow-orange-500/20 transition"
             >
               <div>
-                <span className="inline-block text-sm font-semibold text-orange-400 mb-2">
-                  {res.category}
-                </span>
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="inline-block text-sm font-semibold text-orange-400">
+                    {res.category || "General"}
+                  </span>
+                  {res.source === "mdx" && (
+                    <span className="ml-auto rounded-full border border-pink-500/30 bg-pink-500/10 px-2 py-0.5 text-[11px] text-pink-300">
+                      New
+                    </span>
+                  )}
+                </div>
                 <h3 className="text-2xl font-bold mb-3">{res.title}</h3>
-                <p className="text-gray-400 text-sm mb-6">{res.description}</p>
+                {res.description && (
+                  <p className="text-gray-400 text-sm mb-6 line-clamp-3">
+                    {res.description}
+                  </p>
+                )}
               </div>
               <Link
                 to={`/resources/${res.slug}`}
