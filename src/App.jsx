@@ -14,18 +14,20 @@ import ResourceDetail from "./pages/ResourceDetail";
 import StartHere from "./pages/StartHere";
 import Community from "./pages/Community";
 
-
-// Optional dev route
+import ScrollToTop from "./components/ScrollToTop";
 import TestHero from "./components/TestHero";
 
-// 🎉 Global progress effects (congrats modal, etc.)
-import GlobalProgressEffects from "./components/GlobalProgressEffects";
+// ⭐ New: AI Coach test widget
+import CoachTestWidget from "./components/CoachTestWidget";
 
 function App() {
   return (
     <Router>
       <Header />
-      <GlobalProgressEffects />
+      <ScrollToTop />
+
+      {/* Global AI coach test widget (bottom-right) */}
+      <CoachTestWidget />
 
       <Routes>
         {/* Landing Page */}

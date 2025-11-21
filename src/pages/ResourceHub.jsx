@@ -1,38 +1,31 @@
+// src/pages/ResourceHub.jsx
 import { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getAllResources } from "../lib/resources";
-import { percentComplete, onProgress } from "../lib/progress";
+import { percentComplete } from "../lib/progress";
+
+const HUB_BANNER_KEY = "starterHubBannerHidden:v1";
 
 export default function ResourceHub() {
   const all = useMemo(() => getAllResources(), []);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [bannerHidden, setBannerHidden] = useState(() => {
+    try {
+      return localStorage.getItem(HUB_BANNER_KEY) === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [starterPct, setStarterPct] = useState(0);
 
-  // Starter Path state
-  const [progress, setProgress] = useState(percentComplete());
-  const [showCallout, setShowCallout] = useState(false);
-  const [wasHidden, setWasHidden] = useState(
-    () => localStorage.getItem("hideStarterCallout") === "true"
-  );
-
-  // Initialize visibility + react to progress changes from elsewhere
   useEffect(() => {
-    const decide = () => {
-      const p = percentComplete();
-      setProgress(p);
-      const hidden = localStorage.getItem("hideStarterCallout") === "true";
-      setWasHidden(hidden);
-      // show if not hidden and not complete
-      setShowCallout(!hidden && p < 100);
-    };
-    // initial
-    decide();
-    // subscribe to progress bus (header toggles, other tabs, etc.)
-    const off = onProgress(decide);
-    return off;
+    setStarterPct(percentComplete());
   }, []);
 
-  // Build category list dynamically
+  const showBanner = starterPct < 100 && !bannerHidden;
+
+  // Build category list dynamically from merged data
   const categories = useMemo(() => {
     const set = new Set(all.map((r) => r.category || "General"));
     return ["All", ...Array.from(set).sort()];
@@ -48,76 +41,57 @@ export default function ResourceHub() {
     return matchesCategory && matchesSearch;
   });
 
+  function handleHideBanner() {
+    setBannerHidden(true);
+    try {
+      localStorage.setItem(HUB_BANNER_KEY, "true");
+    } catch {
+      // ignore
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white py-24 px-6">
       {/* Hero Header */}
-      <div className="max-w-4xl mx-auto text-center mb-12">
+      <div className="max-w-4xl mx-auto text-center mb-8">
         <h1 className="text-5xl font-extrabold mb-6">📚 Resource Hub</h1>
         <p className="text-lg text-gray-300">
-          Curated guides, templates, and tools to help you launch and grow your side hustle.
+          Curated guides, templates, and tools to help you launch and grow your
+          side hustle.
         </p>
       </div>
 
-      {/* ✅ Starter Path Callout (visible) */}
-      {showCallout && progress < 100 && (
-        <div className="max-w-4xl mx-auto mb-10 rounded-2xl border border-pink-500/30 bg-pink-500/10 px-6 py-6 text-center relative">
-          <button
-            onClick={() => {
-              setShowCallout(false);
-              localStorage.setItem("hideStarterCallout", "true");
-              setWasHidden(true);
-            }}
-            className="absolute top-3 right-4 text-pink-300 hover:text-pink-400 text-sm"
-            aria-label="Dismiss"
-          >
-            ✕
-          </button>
-          <h3 className="text-2xl font-bold text-pink-300 mb-2">
-            🌟 New to Side Hustles? Start Here!
-          </h3>
-          <p className="text-gray-300 mb-4">
-            Follow our <strong>5-Step Starter Path</strong> to go from idea → plan → launch.
-          </p>
-          <div className="flex justify-center mb-3">
-            <div className="h-2 w-48 bg-gray-800 rounded-full overflow-hidden">
-              <div
-                className="h-2 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full"
-                style={{ width: `${progress}%` }}
-              />
+      {/* Starter Path Callout */}
+      {showBanner && (
+        <div className="max-w-4xl mx-auto mb-10 rounded-2xl border border-orange-500/30 bg-orange-500/10 p-5">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex-1 min-w-[200px]">
+              <p className="text-sm font-semibold text-orange-200">
+                New here? Start with the Starter Path.
+              </p>
+              <p className="text-xs text-orange-100/80 mt-1">
+                A short, guided sequence of 5 core steps. You&apos;re{" "}
+                <span className="font-semibold">{starterPct}%</span> complete.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Link
+                to="/start"
+                className="rounded-xl bg-orange-500 px-4 py-2 text-xs font-semibold text-white hover:bg-orange-600"
+              >
+                {starterPct > 0
+                  ? `Continue Starter Path (${starterPct}%)`
+                  : "Start the Starter Path"}
+              </Link>
+              <button
+                type="button"
+                onClick={handleHideBanner}
+                className="text-xs text-orange-100/70 hover:text-orange-100"
+              >
+                Hide
+              </button>
             </div>
           </div>
-          <p className="text-xs text-gray-400 mb-4">{progress}% complete</p>
-          <Link
-            to="/start"
-            className="inline-block px-6 py-2 rounded-lg bg-orange-600 hover:bg-orange-700 text-sm font-semibold"
-          >
-            🚀 Continue Starter Path
-          </Link>
-        </div>
-      )}
-
-      {/* ✅ Starter Path “hidden” bar (collapsed state) */}
-      {!showCallout && wasHidden && progress < 100 && (
-        <div className="max-w-4xl mx-auto mb-6 flex items-center gap-3 rounded-xl border border-neutral-800 bg-neutral-900 px-4 py-3">
-          <span className="text-xs text-gray-400">
-            Starter Path is hidden ({progress}% complete)
-          </span>
-          <button
-            onClick={() => {
-              localStorage.removeItem("hideStarterCallout");
-              setWasHidden(false);
-              setShowCallout(true);
-            }}
-            className="ml-auto rounded-md border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-xs text-neutral-300 hover:border-neutral-600"
-          >
-            Show
-          </button>
-          <Link
-            to="/start"
-            className="rounded-md bg-orange-600 px-3 py-1.5 text-xs font-semibold hover:bg-orange-700"
-          >
-            Go to Starter Path →
-          </Link>
         </div>
       )}
 

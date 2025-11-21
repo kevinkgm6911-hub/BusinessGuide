@@ -1,55 +1,22 @@
+// src/components/Header.jsx
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  STARTER_SLUGS,
-  percentComplete,
-  onProgress,
-} from "../lib/progress";
-
-const FLAG = "starterBarSeen:v1";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [pct, setPct] = useState(percentComplete());
-  const [seen, setSeen] = useState(() => localStorage.getItem(FLAG) === "true");
-
   const location = useLocation();
-  const slugMatch = location.pathname.match(/^\/resources\/([^/]+)/);
-  const slug = slugMatch ? slugMatch[1] : null;
-  const isOnStart = location.pathname === "/start";
-  const isOnStarterGuide = slug ? STARTER_SLUGS.includes(slug) : false;
-
-  // mark as seen when user hits /start or a starter guide
-  useEffect(() => {
-    if ((isOnStart || isOnStarterGuide) && !seen) {
-      localStorage.setItem(FLAG, "true");
-      setSeen(true);
-    }
-  }, [isOnStart, isOnStarterGuide, seen]);
-
-  // listen for progress updates
-  useEffect(() => {
-    const update = () => setPct(percentComplete());
-    const off = onProgress(update);
-    return off;
-  }, []);
-
-  // auto-hide if complete
-  useEffect(() => {
-    if (pct >= 100 && seen) {
-      localStorage.removeItem(FLAG);
-      setSeen(false);
-    }
-  }, [pct, seen]);
-
-  const shouldShow = (seen || isOnStart || isOnStarterGuide) && pct < 100;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
 
   return (
     <header
@@ -69,34 +36,36 @@ export default function Header() {
           Side Hustle Starter
         </Link>
 
-        {/* ✨ Glowing Starter Path progress inline */}
-        {shouldShow && (
-          <div className="hidden md:flex items-center gap-3 flex-1 max-w-xs relative">
-            <span className="text-xs text-pink-300 whitespace-nowrap font-medium">
-              Starter Path
-            </span>
-            <div className="h-2 flex-1 rounded-full bg-neutral-800 overflow-hidden relative">
-              <div
-                className="h-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 shadow-[0_0_10px_2px_rgba(255,107,53,0.4)] transition-all duration-300"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-            <span className="text-xs text-gray-400 w-10 text-right">{pct}%</span>
-          </div>
-        )}
-
         {/* Desktop Nav */}
         <nav className="hidden md:flex gap-6 text-gray-300 items-center">
-          <Link to="/" className="hover:text-orange-400 transition">
+          <Link
+            to="/"
+            className="hover:text-orange-400 transition"
+          >
             Home
           </Link>
-          <Link to="/resources" className="hover:text-orange-400 transition">
+          <Link
+            to="/resources"
+            className="hover:text-orange-400 transition"
+          >
             Resources
           </Link>
-          <Link to="/start" className="hover:text-orange-400 transition">
+          <Link
+            to="/start"
+            className="hover:text-orange-400 transition"
+          >
             Start
           </Link>
-          <Link to="/about" className="hover:text-orange-400 transition">
+          <Link
+            to="/community"
+            className="hover:text-orange-400 transition"
+          >
+            Community
+          </Link>
+          <Link
+            to="/about"
+            className="hover:text-orange-400 transition"
+          >
             About
           </Link>
         </nav>
@@ -133,6 +102,13 @@ export default function Header() {
             className="block hover:text-orange-400 transition"
           >
             Start
+          </Link>
+          <Link
+            to="/community"
+            onClick={() => setMenuOpen(false)}
+            className="block hover:text-orange-400 transition"
+          >
+            Community
           </Link>
           <Link
             to="/about"
