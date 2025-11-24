@@ -10,6 +10,10 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 let supabase = null;
 if (SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
   supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+} else {
+  console.warn(
+    "[ask-coach] Supabase service client not initialized. Check SUPABASE_URL / VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY."
+  );
 }
 
 exports.handler = async function (event) {
@@ -21,7 +25,7 @@ exports.handler = async function (event) {
   }
 
   if (!OPENAI_API_KEY) {
-    console.error("Missing OPENAI_API_KEY env var");
+    console.error("[ask-coach] Missing OPENAI_API_KEY env var");
     return {
       statusCode: 500,
       body: JSON.stringify({
@@ -34,7 +38,7 @@ exports.handler = async function (event) {
   try {
     body = JSON.parse(event.body || "{}");
   } catch (err) {
-    console.error("Invalid JSON body", err);
+    console.error("[ask-coach] Invalid JSON body", err);
     return {
       statusCode: 400,
       body: JSON.stringify({ error: "Invalid JSON body" }),
@@ -51,7 +55,7 @@ exports.handler = async function (event) {
     };
   }
 
-  // Build base system prompt
+  // Base instructions for the coach
   const systemPrompt = `
 You are the Side Hustle Starter Coach, a calm and practical assistant for new entrepreneurs.
 
@@ -80,12 +84,18 @@ Starter Path behavior:
   1) A small next step
   2) A pointer to a relevant guide (URL).
 
+Memory & profile:
+- You may receive a "user profile" summary (experience level, focus area, goals, notes).
+- Use it to tailor advice to their situation.
+- If the user explicitly asks what you know about them, you MAY summarize their profile in your own words.
+- Otherwise, do not dump the profile back verbatim; just let it shape your recommendations.
+
 Always:
 - Give concrete next actions they can do in the next 24–72 hours.
 - Keep answers tightly focused on their situation; do not dump long generic lectures.
   `.trim();
 
-  // Build small context snippet
+  // Build context snippet
   let contextPieces = [];
 
   if (pageContext) {
@@ -100,7 +110,7 @@ Always:
           Array.isArray(doneSlugs) && doneSlugs.length
             ? doneSlugs.join(", ")
             : "none"
-        }. Next suggested step: ${nextSlug || "unknown"}.`
+        }. Next suggested step slug: ${nextSlug || "unknown"}.`
       );
     } catch {
       // ignore
@@ -117,7 +127,11 @@ Always:
         .eq("user_id", userId)
         .maybeSingle();
 
-      if (!error && data) {
+      if (error) {
+        console.error("[ask-coach] Error fetching user profile", error);
+      }
+
+      if (data) {
         const parts = [];
         if (data.display_name) {
           parts.push(`Name: ${data.display_name}`);
@@ -139,8 +153,12 @@ Always:
         }
       }
     } catch (err) {
-      console.error("Error fetching user profile", err);
+      console.error("[ask-coach] Exception fetching user profile", err);
     }
+  } else if (userId && !supabase) {
+    console.warn(
+      "[ask-coach] userId provided but Supabase not initialized; profile will not be used."
+    );
   }
 
   if (profileSummary) {
@@ -149,7 +167,7 @@ Always:
 
   if (contextPieces.length) {
     contextPieces.push(
-      "Use this context only to tailor your answer; do not repeat it verbatim."
+      "Use this context to tailor your answer. If the user asks what you know about them, you may summarize the profile."
     );
   }
 
@@ -180,7 +198,7 @@ Always:
 
     if (!response.ok) {
       const text = await response.text();
-      console.error("OpenAI error", response.status, text);
+      console.error("[ask-coach] OpenAI error", response.status, text);
       return {
         statusCode: 500,
         body: JSON.stringify({
@@ -200,7 +218,7 @@ Always:
       body: JSON.stringify({ reply }),
     };
   } catch (err) {
-    console.error("Error calling OpenAI", err);
+    console.error("[ask-coach] Error calling OpenAI", err);
     return {
       statusCode: 500,
       body: JSON.stringify({
