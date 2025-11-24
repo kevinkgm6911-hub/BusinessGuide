@@ -1,6 +1,7 @@
 // src/components/CoachTestWidget.jsx
 
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 import {
   percentComplete,
   nextIncomplete,
@@ -152,13 +153,43 @@ export default function CoachTestWidget() {
                         }`}
                       >
                         <div
-                          className={`max-w-[80%] rounded-2xl px-3 py-2 text-xs md:text-sm leading-relaxed whitespace-pre-wrap ${
+                          className={`max-w-[80%] rounded-2xl px-3 py-2 text-xs md:text-sm leading-relaxed ${
                             isUser
-                              ? "bg-orange-600 text-white rounded-br-sm"
+                              ? "bg-orange-600 text-white rounded-br-sm whitespace-pre-wrap"
                               : "bg-gray-800 text-gray-100 rounded-bl-sm border border-gray-700/60"
                           }`}
                         >
-                          {msg.content}
+                          {isUser ? (
+                            msg.content
+                          ) : (
+                            <ReactMarkdown
+                              components={{
+                                a: (props) => (
+                                  <a
+                                    {...props}
+                                    className="text-orange-400 underline hover:text-orange-300"
+                                  />
+                                ),
+                                p: (props) => (
+                                  <p className="mb-2 last:mb-0" {...props} />
+                                ),
+                                ul: (props) => (
+                                  <ul
+                                    className="list-disc pl-4 mb-2 space-y-1 last:mb-0"
+                                    {...props}
+                                  />
+                                ),
+                                ol: (props) => (
+                                  <ol
+                                    className="list-decimal pl-4 mb-2 space-y-1 last:mb-0"
+                                    {...props}
+                                  />
+                                ),
+                              }}
+                            >
+                              {msg.content}
+                            </ReactMarkdown>
+                          )}
                         </div>
                       </div>
                     );
