@@ -1,4 +1,11 @@
+// src/components/CoachTestWidget.jsx
 import { useState } from "react";
+import {
+  percentComplete,
+  nextIncomplete,
+  STARTER_SLUGS,
+  isComplete as progressIsComplete,
+} from "../lib/progress";
 
 const INITIAL_MESSAGE = {
   role: "assistant",
@@ -20,6 +27,18 @@ export default function CoachTestWidget() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  function buildStarterProgressPayload() {
+    const pct = percentComplete();
+    const nextSlug = nextIncomplete();
+    const isCompleteFlag = progressIsComplete();
+    return {
+      percent: pct,
+      totalSteps: STARTER_SLUGS.length,
+      nextSlug: nextSlug || null,
+      isComplete: isCompleteFlag,
+    };
+  }
+
   async function sendMessage(text) {
     const trimmed = text.trim();
     if (!trimmed || loading) return;
@@ -38,6 +57,7 @@ export default function CoachTestWidget() {
         body: JSON.stringify({
           message: trimmed,
           pageContext: window.location.pathname,
+          starterProgress: buildStarterProgressPayload(),
         }),
       });
 
@@ -113,7 +133,7 @@ export default function CoachTestWidget() {
               </button>
             </div>
 
-            {/* Main body: messages + sidebar prompts (on larger screens) */}
+            {/* Main body: messages + sidebar prompts */}
             <div className="flex flex-1 flex-col md:flex-row">
               {/* Chat area */}
               <div className="flex-1 flex flex-col px-3 py-3 md:px-5 md:py-4">
@@ -123,9 +143,7 @@ export default function CoachTestWidget() {
                     return (
                       <div
                         key={idx}
-                        className={`flex ${
-                          isUser ? "justify-end" : "justify-start"
-                        }`}
+                        className={`flex ${isUser ? "justify-end" : "justify-start"}`}
                       >
                         <div
                           className={`max-w-[80%] rounded-2xl px-3 py-2 text-xs md:text-sm leading-relaxed whitespace-pre-wrap ${
@@ -152,7 +170,6 @@ export default function CoachTestWidget() {
                   )}
                 </div>
 
-                {/* Error */}
                 {error && (
                   <p className="mt-2 text-[11px] text-red-400">{error}</p>
                 )}
@@ -184,7 +201,7 @@ export default function CoachTestWidget() {
                 </p>
               </div>
 
-              {/* Suggested prompts section (side on desktop, stacked on mobile) */}
+              {/* Suggested prompts */}
               <div className="border-t border-gray-800 px-3 py-3 md:border-l md:border-t-0 md:w-64 md:px-4 md:py-4 flex flex-col gap-2">
                 <p className="text-[11px] font-semibold text-gray-300">
                   Not sure what to ask?
