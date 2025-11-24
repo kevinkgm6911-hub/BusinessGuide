@@ -1,124 +1,48 @@
-// src/components/Header.jsx
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation();
+  const { user, signInWithGoogle, signOut } = useAuth();
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [location.pathname]);
+  // ... existing header + nav
 
   return (
-    <header
-      className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 ${
-        scrolled
-          ? "bg-gray-950/90 backdrop-blur-md shadow-lg"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4 gap-4">
-        {/* Logo */}
-        <Link
-          to="/"
-          className="text-xl font-bold text-white whitespace-nowrap"
-          onClick={() => setMenuOpen(false)}
-        >
-          Side Hustle Starter
-        </Link>
+    <header /* ... */>
+      {/* left side: logo */}
+      {/* center: nav */}
+      <nav className="hidden md:flex gap-6 text-gray-300 items-center">
+        <Link to="/">Home</Link>
+        <Link to="/resources">Resources</Link>
+        <Link to="/start">Start</Link>
+        <Link to="/community">Community</Link>
+        <Link to="/about">About</Link>
+      </nav>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex gap-6 text-gray-300 items-center">
-          <Link
-            to="/"
-            className="hover:text-orange-400 transition"
+      {/* right side: auth */}
+      <div className="hidden md:flex items-center gap-3">
+        {user ? (
+          <>
+            <span className="text-xs text-gray-400">
+              {user.email}
+            </span>
+            <button
+              onClick={signOut}
+              className="rounded-full border border-gray-700 px-3 py-1 text-xs text-gray-200 hover:border-orange-500"
+            >
+              Log out
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={signInWithGoogle}
+            className="rounded-full bg-orange-600 px-3 py-1 text-xs text-white hover:bg-orange-700"
           >
-            Home
-          </Link>
-          <Link
-            to="/resources"
-            className="hover:text-orange-400 transition"
-          >
-            Resources
-          </Link>
-          <Link
-            to="/start"
-            className="hover:text-orange-400 transition"
-          >
-            Start
-          </Link>
-          <Link
-            to="/community"
-            className="hover:text-orange-400 transition"
-          >
-            Community
-          </Link>
-          <Link
-            to="/about"
-            className="hover:text-orange-400 transition"
-          >
-            About
-          </Link>
-        </nav>
-
-        {/* Mobile Hamburger */}
-        <button
-          className="md:hidden text-white focus:outline-none"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? "✖" : "☰"}
-        </button>
+            Log in / Sign up
+          </button>
+        )}
       </div>
 
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-gray-950/95 backdrop-blur-md border-t border-gray-700 px-6 py-4 space-y-4 text-gray-300">
-          <Link
-            to="/"
-            onClick={() => setMenuOpen(false)}
-            className="block hover:text-orange-400 transition"
-          >
-            Home
-          </Link>
-          <Link
-            to="/resources"
-            onClick={() => setMenuOpen(false)}
-            className="block hover:text-orange-400 transition"
-          >
-            Resources
-          </Link>
-          <Link
-            to="/start"
-            onClick={() => setMenuOpen(false)}
-            className="block hover:text-orange-400 transition"
-          >
-            Start
-          </Link>
-          <Link
-            to="/community"
-            onClick={() => setMenuOpen(false)}
-            className="block hover:text-orange-400 transition"
-          >
-            Community
-          </Link>
-          <Link
-            to="/about"
-            onClick={() => setMenuOpen(false)}
-            className="block hover:text-orange-400 transition"
-          >
-            About
-          </Link>
-        </div>
-      )}
+      {/* ...mobile menu can get a similar treatment */}
     </header>
   );
 }
