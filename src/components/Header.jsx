@@ -15,21 +15,16 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // close mobile menu on route change
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname]);
 
-  // If Google isn’t enabled yet, you can temporarily swap this
-  // to an alert instead of calling signInWithGoogle directly.
   const handleLoginClick = async () => {
     try {
       await signInWithGoogle();
     } catch (err) {
       console.error("Login error:", err);
-      alert(
-        "Login isn’t fully configured yet. Once Google auth is enabled in Supabase, this will let you sign in."
-      );
+      alert("Login isn’t fully configured yet.");
     }
   };
 
@@ -42,7 +37,6 @@ export default function Header() {
       }`}
     >
       <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4 gap-4">
-        {/* Logo / Site Name */}
         <Link
           to="/"
           className="text-lg md:text-xl font-bold text-white whitespace-nowrap"
@@ -67,6 +61,13 @@ export default function Header() {
           <Link to="/about" className="hover:text-orange-400 transition">
             About
           </Link>
+
+          {/* ✅ NEW: Profile link (only when logged in) */}
+          {user && (
+            <Link to="/profile" className="hover:text-orange-400 transition">
+              Profile
+            </Link>
+          )}
         </nav>
 
         {/* Desktop Auth */}
@@ -108,24 +109,25 @@ export default function Header() {
           <Link to="/" className="block hover:text-orange-400 transition">
             Home
           </Link>
-          <Link
-            to="/resources"
-            className="block hover:text-orange-400 transition"
-          >
+          <Link to="/resources" className="block hover:text-orange-400 transition">
             Resources
           </Link>
           <Link to="/start" className="block hover:text-orange-400 transition">
             Start
           </Link>
-          <Link
-            to="/community"
-            className="block hover:text-orange-400 transition"
-          >
+          <Link to="/community" className="block hover:text-orange-400 transition">
             Community
           </Link>
           <Link to="/about" className="block hover:text-orange-400 transition">
             About
           </Link>
+
+          {/* ✅ NEW: Profile link in mobile menu */}
+          {user && (
+            <Link to="/profile" className="block hover:text-orange-400 transition">
+              Profile
+            </Link>
+          )}
 
           <div className="pt-3 border-t border-gray-800">
             {user ? (

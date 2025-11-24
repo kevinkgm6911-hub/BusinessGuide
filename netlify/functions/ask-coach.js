@@ -1,12 +1,18 @@
 // netlify/functions/ask-coach.js
-
-// Simple Netlify function that forwards a chat request to OpenAI
-// and returns a single assistant reply.
-
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
+const { createClient } = require("@supabase/supabase-js");
+
+const SUPABASE_URL =
+  process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+let supabase = null;
+if (SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
+  supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+}
+
 exports.handler = async function (event) {
-  // Basic method check
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -35,7 +41,7 @@ exports.handler = async function (event) {
     };
   }
 
-  const { message, pageContext, starterProgress } = body || {};
+  const { message, pageContext, starterProgress, userId } = body || {};
   const userMessage = (message || "").trim();
 
   if (!userMessage) {
@@ -45,7 +51,7 @@ exports.handler = async function (event) {
     };
   }
 
-  // Build a friendly system prompt for the coach
+  // Build base system prompt
   const systemPrompt = `
 You are the Side Hustle Starter Coach, a calm and practical assistant for new entrepreneurs.
 
@@ -61,7 +67,7 @@ Your job:
 - When relevant, point them to guides on the site using these URLs:
   - Starter Path overview: /start
   - Resource hub: /resources
-  - Example guides (only if relevant):
+  - Example guides:
     - Choose your side hustle: /resources/choose-your-side-hustle
     - First action plan: /resources/first-action-plan
     - Budgeting basics: /resources/budgeting-setup
@@ -72,48 +78,85 @@ Starter Path behavior:
 - If the user sounds brand new or unsure where to begin, strongly recommend the Starter Path at /start.
 - If the request mentions "what next" or "what step next", try to frame your answer as:
   1) A small next step
-  2) A pointer to a relevant guide (URL)
-- If starterProgress is provided, you may refer to:
-  - which step they're on,
-  - which steps are done,
-  - and which would be a good next step.
+  2) A pointer to a relevant guide (URL).
 
 Always:
 - Give concrete next actions they can do in the next 24–72 hours.
 - Keep answers tightly focused on their situation; do not dump long generic lectures.
   `.trim();
 
-  // Make a short context message from starterProgress, if provided
-  let contextSnippet = "";
+  // Build small context snippet
+  let contextPieces = [];
+
+  if (pageContext) {
+    contextPieces.push(`User is currently on page: ${pageContext}`);
+  }
+
   if (starterProgress && typeof starterProgress === "object") {
     try {
       const { percent, doneSlugs, nextSlug } = starterProgress;
-      contextSnippet =
-        `Starter Path progress: ${percent}% complete.\n` +
-        `Completed steps: ${Array.isArray(doneSlugs) && doneSlugs.length ? doneSlugs.join(", ") : "none"}.\n` +
-        `Next suggested step: ${nextSlug || "unknown"}.\n`;
-    } catch (_) {
-      // ignore if weird
-      contextSnippet = "";
+      contextPieces.push(
+        `Starter Path progress: ${percent}% complete. Completed steps: ${
+          Array.isArray(doneSlugs) && doneSlugs.length
+            ? doneSlugs.join(", ")
+            : "none"
+        }. Next suggested step: ${nextSlug || "unknown"}.`
+      );
+    } catch {
+      // ignore
     }
   }
 
-  const pageInfo = pageContext
-    ? `User is currently on page: ${pageContext}\n`
-    : "";
+  // Look up user profile if we can
+  let profileSummary = "";
+  if (userId && supabase) {
+    try {
+      const { data, error } = await supabase
+        .from("user_profiles")
+        .select("*")
+        .eq("user_id", userId)
+        .maybeSingle();
 
-  const contextMessage = [
-    pageInfo || "",
-    contextSnippet || "",
-    "Use this context only to tailor your answer; do not repeat it verbatim.",
-  ]
-    .join("")
-    .trim();
+      if (!error && data) {
+        const parts = [];
+        if (data.display_name) {
+          parts.push(`Name: ${data.display_name}`);
+        }
+        if (data.experience_level) {
+          parts.push(`Experience: ${data.experience_level}`);
+        }
+        if (data.focus_area) {
+          parts.push(`Focus area: ${data.focus_area}`);
+        }
+        if (data.current_goal) {
+          parts.push(`Goal (3–6 months): ${data.current_goal}`);
+        }
+        if (data.notes) {
+          parts.push(`Notes: ${data.notes}`);
+        }
+        if (parts.length) {
+          profileSummary = `User profile: ${parts.join(" | ")}.`;
+        }
+      }
+    } catch (err) {
+      console.error("Error fetching user profile", err);
+    }
+  }
+
+  if (profileSummary) {
+    contextPieces.push(profileSummary);
+  }
+
+  if (contextPieces.length) {
+    contextPieces.push(
+      "Use this context only to tailor your answer; do not repeat it verbatim."
+    );
+  }
 
   const messages = [
     { role: "system", content: systemPrompt },
-    ...(contextMessage
-      ? [{ role: "system", content: contextMessage }]
+    ...(contextPieces.length
+      ? [{ role: "system", content: contextPieces.join("\n") }]
       : []),
     { role: "user", content: userMessage },
   ];

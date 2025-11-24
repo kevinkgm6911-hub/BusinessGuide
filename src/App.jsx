@@ -7,27 +7,23 @@ import Funnel from "./components/Funnel";
 import ResourceHighlight from "./components/ResourceHighlight";
 import CommunityBlock from "./components/CommunityBlock";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 
 import About from "./pages/About";
 import ResourceHub from "./pages/ResourceHub";
 import ResourceDetail from "./pages/ResourceDetail";
 import StartHere from "./pages/StartHere";
 import Community from "./pages/Community";
+import Profile from "./pages/Profile";
 
-import ScrollToTop from "./components/ScrollToTop";
 import TestHero from "./components/TestHero";
-
-// ⭐ New: AI Coach test widget
 import CoachTestWidget from "./components/CoachTestWidget";
 
 function App() {
   return (
     <Router>
-      <Header />
       <ScrollToTop />
-
-      {/* Global AI coach test widget (bottom-right) */}
-      <CoachTestWidget />
+      <Header />
 
       <Routes>
         {/* Landing Page */}
@@ -80,6 +76,17 @@ function App() {
           }
         />
 
+        {/* Profile */}
+        <Route
+          path="/profile"
+          element={
+            <>
+              <Profile />
+              <Footer />
+            </>
+          }
+        />
+
         {/* About */}
         <Route
           path="/about"
@@ -94,6 +101,9 @@ function App() {
         {/* Temporary 3D Test */}
         <Route path="/test3d" element={<TestHero />} />
       </Routes>
+
+      {/* Global coach widget */}
+      <CoachTestWidget />
     </Router>
   );
 }
