@@ -10,11 +10,11 @@ export const STARTER_SLUGS = [
   "launch-your-first-page",
 ];
 
-// --- storage helpers ---
+// --- storage helpers
 export function loadProgress() {
   try {
-    const raw = localStorage.getItem(KEY);
-    return raw ? JSON.parse(raw) : {};
+    if (typeof localStorage === "undefined") return {};
+    return JSON.parse(localStorage.getItem(KEY)) || {};
   } catch {
     return {};
   }
@@ -22,14 +22,18 @@ export function loadProgress() {
 
 export function saveProgress(p) {
   try {
+    if (typeof localStorage === "undefined") return;
     localStorage.setItem(KEY, JSON.stringify(p));
+    // notify all listeners (same tab)
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("progress:update"));
+    }
   } catch {
     // ignore
   }
 }
 
-// --- API ---
-
+// --- basic api
 export function isDone(slug) {
   const p = loadProgress();
   return !!p[slug];
@@ -47,13 +51,40 @@ export function resetProgress() {
 
 export function nextIncomplete() {
   const p = loadProgress();
-  return STARTER_SLUGS.find((s) => !p[s]) || null;
+  return STARTER_SLUGS.find((s) => !p[s]);
 }
 
 export function percentComplete() {
   const p = loadProgress();
-  const total = STARTER_SLUGS.length;
-  if (!total) return 0;
-  const doneCount = STARTER_SLUGS.filter((s) => p[s]).length;
-  return Math.round((doneCount / total) * 100);
+  const done = STARTER_SLUGS.filter((s) => p[s]).length;
+  if (STARTER_SLUGS.length === 0) return 0;
+  return Math.round((done / STARTER_SLUGS.length) * 100);
 }
+
+// --- subscribe helper for React components
+export function onProgress(handler) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  const cb = () => handler();
+  window.addEventListener("progress:update", cb);
+
+  // cross-tab updates via native 'storage'
+  const storageCb = (e) => {
+    if (e.key === KEY) handler();
+  };
+  window.addEventListener("storage", storageCb);
+
+  return () => {
+    window.removeEventListener("progress:update", cb);
+    window.removeEventListener("storage", storageCb);
+  };
+}
+
+// --- completion helpers
+export function isComplete() {
+  return percentComplete() >= 100;
+}
+
+export const COMPLETE_SEEN_FLAG = "starterPathCompleteSeen:v1";

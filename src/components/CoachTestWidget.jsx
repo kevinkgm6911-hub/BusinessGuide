@@ -1,4 +1,5 @@
 // src/components/CoachTestWidget.jsx
+
 import { useState } from "react";
 import {
   percentComplete,
@@ -69,7 +70,10 @@ export default function CoachTestWidget() {
         const answer =
           data.answer ||
           "I’m not sure what to say yet, try rephrasing your question.";
-        setMessages((prev) => [...prev, { role: "assistant", content: answer }]);
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: answer },
+        ]);
       }
     } catch (err) {
       console.error("Network error calling ask-coach:", err);
@@ -143,7 +147,9 @@ export default function CoachTestWidget() {
                     return (
                       <div
                         key={idx}
-                        className={`flex ${isUser ? "justify-end" : "justify-start"}`}
+                        className={`flex ${
+                          isUser ? "justify-end" : "justify-start"
+                        }`}
                       >
                         <div
                           className={`max-w-[80%] rounded-2xl px-3 py-2 text-xs md:text-sm leading-relaxed whitespace-pre-wrap ${
