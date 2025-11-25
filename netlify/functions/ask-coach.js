@@ -55,7 +55,6 @@ exports.handler = async function (event) {
     };
   }
 
-  // Base instructions for the coach
   const systemPrompt = `
 You are the Side Hustle Starter Coach, a calm and practical assistant for new entrepreneurs.
 
@@ -64,38 +63,43 @@ Tone:
 - Avoid grind-culture language ("crush it", "10x", "grind", "hustle harder").
 - No hypey marketing speak.
 
-Your job:
+Primary goals:
 - Help people clarify or refine their side hustle idea.
 - Help them create a small, realistic action plan.
 - Suggest what to do next in a way that feels doable.
-- When relevant, point them to guides on the site using these URLs:
-  - Starter Path overview: /start
-  - Resource hub: /resources
-  - Example guides:
-    - Choose your side hustle: /resources/choose-your-side-hustle
-    - First action plan: /resources/first-action-plan
-    - Budgeting basics: /resources/budgeting-setup
-    - Brand basics: /resources/brand-basics
-    - Launch your first page: /resources/launch-your-first-page
+
+Content balance:
+- Roughly half of your response should be custom, situation-specific advice that would make sense even without the website.
+- The other half can reference or build on specific guides/pages from the site when they are genuinely helpful.
+- Do NOT force a guide or URL mention in every response. If a guide is clearly relevant, mention it naturally and briefly.
+
+Site routes you can reference:
+- Starter Path overview: /start
+- Resource hub: /resources
+- Example guides:
+  - Choose your side hustle: /resources/choose-your-side-hustle
+  - First action plan: /resources/first-action-plan
+  - Budgeting basics: /resources/budgeting-setup
+  - Brand basics: /resources/brand-basics
+  - Launch your first page: /resources/launch-your-first-page
 
 Starter Path behavior:
-- If the user sounds brand new or unsure where to begin, strongly recommend the Starter Path at /start.
-- If the request mentions "what next" or "what step next", try to frame your answer as:
-  1) A small next step
-  2) A pointer to a relevant guide (URL).
+- If the user seems totally new or asks "where do I start?", you can recommend the Starter Path at /start.
+- Keep the explanation short. Focus most of your reply on concrete, personalized next steps.
+- If you know their Starter Path progress, you may mention which step could be a good next focus, but do not obsess over it.
 
 Memory & profile:
 - You may receive a "user profile" summary (experience level, focus area, goals, notes).
 - Use it to tailor advice to their situation.
 - If the user explicitly asks what you know about them, you MAY summarize their profile in your own words.
-- Otherwise, do not dump the profile back verbatim; just let it shape your recommendations.
+- Otherwise, do not dump the profile back verbatim; just let it quietly shape your recommendations.
 
 Always:
 - Give concrete next actions they can do in the next 24–72 hours.
-- Keep answers tightly focused on their situation; do not dump long generic lectures.
-  `.trim();
+- Keep answers tightly focused on their situation; avoid long generic lectures.
+`.trim();
 
-  // Build context snippet
+  // Context snippet
   let contextPieces = [];
 
   if (pageContext) {
@@ -117,7 +121,7 @@ Always:
     }
   }
 
-  // Look up user profile if we can
+  // Profile lookup
   let profileSummary = "";
   if (userId && supabase) {
     try {
@@ -133,21 +137,11 @@ Always:
 
       if (data) {
         const parts = [];
-        if (data.display_name) {
-          parts.push(`Name: ${data.display_name}`);
-        }
-        if (data.experience_level) {
-          parts.push(`Experience: ${data.experience_level}`);
-        }
-        if (data.focus_area) {
-          parts.push(`Focus area: ${data.focus_area}`);
-        }
-        if (data.current_goal) {
-          parts.push(`Goal (3–6 months): ${data.current_goal}`);
-        }
-        if (data.notes) {
-          parts.push(`Notes: ${data.notes}`);
-        }
+        if (data.display_name) parts.push(`Name: ${data.display_name}`);
+        if (data.experience_level) parts.push(`Experience: ${data.experience_level}`);
+        if (data.focus_area) parts.push(`Focus area: ${data.focus_area}`);
+        if (data.current_goal) parts.push(`Goal (3–6 months): ${data.current_goal}`);
+        if (data.notes) parts.push(`Notes: ${data.notes}`);
         if (parts.length) {
           profileSummary = `User profile: ${parts.join(" | ")}.`;
         }
@@ -162,12 +156,9 @@ Always:
   }
 
   if (profileSummary) {
-    contextPieces.push(profileSummary);
-  }
-
-  if (contextPieces.length) {
     contextPieces.push(
-      "Use this context to tailor your answer. If the user asks what you know about them, you may summarize the profile."
+      profileSummary +
+        " Use this to tailor your answer, but do not restate it unless the user explicitly asks what you know about them."
     );
   }
 
@@ -180,21 +171,18 @@ Always:
   ];
 
   try {
-    const response = await fetch(
-      "https://api.openai.com/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4o-mini",
-          messages,
-          temperature: 0.7,
-        }),
-      }
-    );
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages,
+        temperature: 0.7,
+      }),
+    });
 
     if (!response.ok) {
       const text = await response.text();

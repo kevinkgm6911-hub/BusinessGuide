@@ -17,7 +17,7 @@ import Community from "./pages/Community";
 import Profile from "./pages/Profile";
 
 import TestHero from "./components/TestHero";
-import CoachTestWidget from "./components/CoachTestWidget";
+import CoachWidget from "./components/CoachWidget";
 
 function App() {
   return (
@@ -103,7 +103,7 @@ function App() {
       </Routes>
 
       {/* Global coach widget */}
-      <CoachTestWidget />
+      <CoachWidget />
     </Router>
   );
 }
