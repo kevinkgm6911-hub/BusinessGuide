@@ -1,3 +1,4 @@
+// src/components/StarterHeaderBar.jsx
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -19,17 +20,14 @@ export default function StarterHeaderBar() {
   const { pathname } = useLocation();
   const slug = useCurrentSlug();
 
-  // Detect whether we're currently on the Start page or a Starter guide
   const isOnStart = pathname === "/start";
   const isOnStarterGuide = slug ? STARTER_SLUGS.includes(slug) : false;
 
-  // Should the bar be visible at all?
   const [pct, setPct] = useState(percentComplete());
   const [seen, setSeen] = useState(
     () => localStorage.getItem(FLAG) === "true"
   );
 
-  // Mark as "seen" the first time user touches the path
   useEffect(() => {
     if ((isOnStart || isOnStarterGuide) && !seen) {
       localStorage.setItem(FLAG, "true");
@@ -37,7 +35,6 @@ export default function StarterHeaderBar() {
     }
   }, [isOnStart, isOnStarterGuide, seen]);
 
-  // Keep progress fresh & auto-hide at 100%
   useEffect(() => {
     const update = () => setPct(percentComplete());
     update();
@@ -45,7 +42,6 @@ export default function StarterHeaderBar() {
     return off;
   }, []);
 
-  // Auto-hide if complete
   useEffect(() => {
     if (pct >= 100 && seen) {
       localStorage.removeItem(FLAG);
@@ -53,31 +49,51 @@ export default function StarterHeaderBar() {
     }
   }, [pct, seen]);
 
-  // Render conditions:
-  // - Only show if user has seen the path at least once (or currently viewing it)
-  // - And if not complete
   const shouldShow = (seen || isOnStart || isOnStarterGuide) && pct < 100;
   if (!shouldShow) return null;
 
   const next = nextIncomplete();
 
   return (
-    <div className="border-b border-neutral-800 bg-gray-900/80 backdrop-blur supports-[backdrop-filter]:bg-gray-900/60">
-      <div className="mx-auto flex max-w-6xl items-center gap-3 px-6 py-2">
-        <span className="whitespace-nowrap text-xs text-pink-300">
+    <div
+      className="
+        sticky 
+        top-16 md:top-20 
+        z-40 
+        border-b border-neutral-800 
+        bg-gray-900/80 
+        backdrop-blur 
+        supports-[backdrop-filter]:bg-gray-900/60
+      "
+    >
+      <div
+        className="
+          mx-auto 
+          flex max-w-6xl 
+          flex-col gap-2 px-4 py-2 
+          sm:flex-row sm:items-center sm:gap-3 sm:px-6
+        "
+      >
+        {/* Label */}
+        <span className="text-[11px] font-medium uppercase tracking-wide text-pink-300">
           Starter Path
         </span>
 
-        <div className="h-2 w-44 flex-1 max-w-xs overflow-hidden rounded-full bg-neutral-800">
-          <div
-            className="h-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 transition-all"
-            style={{ width: `${pct}%` }}
-          />
+        {/* Progress bar + percent */}
+        <div className="flex flex-1 items-center gap-2">
+          <div className="h-2 flex-1 overflow-hidden rounded-full bg-neutral-800">
+            <div
+              className="h-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 transition-all"
+              style={{ width: `${pct}%` }}
+            />
+          </div>
+          <span className="whitespace-nowrap text-[11px] text-gray-400">
+            {pct}%
+          </span>
         </div>
 
-        <span className="text-xs text-gray-400">{pct}%</span>
-
-        <div className="ml-auto flex items-center gap-2">
+        {/* Actions */}
+        <div className="mt-1 flex items-center gap-2 sm:mt-0 sm:ml-auto">
           {next ? (
             <Link
               to={`/resources/${next}`}
@@ -94,7 +110,6 @@ export default function StarterHeaderBar() {
             </Link>
           )}
 
-          {/* Optional: manual hide until they revisit the path */}
           <button
             onClick={() => {
               localStorage.removeItem(FLAG);

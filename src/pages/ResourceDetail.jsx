@@ -13,16 +13,39 @@ import {
 
 // MDX element mapping
 const mdxComponents = {
-  h1: (p) => <h1 className="text-3xl font-semibold mt-6" {...p} />,
-  h2: (p) => <h2 className="text-2xl font-semibold mt-6" {...p} />,
-  h3: (p) => <h3 className="text-xl font-semibold mt-5" {...p} />,
-  p: (p) => <p className="mt-3 text-gray-200" {...p} />,
-  a: (p) => <a className="text-orange-400 hover:underline" {...p} />,
+  h1: (p) => (
+    <h1
+      className="mt-6 text-2xl sm:text-3xl md:text-4xl font-semibold"
+      {...p}
+    />
+  ),
+  h2: (p) => (
+    <h2
+      className="mt-6 text-xl sm:text-2xl font-semibold"
+      {...p}
+    />
+  ),
+  h3: (p) => (
+    <h3
+      className="mt-5 text-lg sm:text-xl font-semibold"
+      {...p}
+    />
+  ),
+  p: (p) => <p className="mt-3 text-sm sm:text-base text-gray-200" {...p} />,
+  a: (p) => (
+    <a className="text-orange-400 hover:underline break-words" {...p} />
+  ),
   ul: (p) => (
-    <ul className="list-disc pl-5 mt-3 space-y-1 text-gray-200" {...p} />
+    <ul
+      className="list-disc pl-5 mt-3 space-y-1 text-sm sm:text-base text-gray-200"
+      {...p}
+    />
   ),
   ol: (p) => (
-    <ol className="list-decimal pl-5 mt-3 space-y-1 text-gray-200" {...p} />
+    <ol
+      className="list-decimal pl-5 mt-3 space-y-1 text-sm sm:text-base text-gray-200"
+      {...p}
+    />
   ),
 };
 
@@ -37,7 +60,6 @@ function StarterRibbon({ slug }) {
   const next =
     idx < STARTER_SLUGS.length - 1 ? STARTER_SLUGS[idx + 1] : null;
 
-  // Refresh when tab regains focus
   useEffect(() => {
     const onFocus = () => setPct(percentComplete());
     window.addEventListener("focus", onFocus);
@@ -50,20 +72,20 @@ function StarterRibbon({ slug }) {
   }
 
   return (
-    <div className="sticky top-0 z-40 mb-6 border-b border-neutral-800 bg-gray-900/80 backdrop-blur supports-[backdrop-filter]:bg-gray-900/60">
-      <div className="mx-auto max-w-3xl px-6 py-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-xs text-pink-300 rounded-full border border-pink-500/30 bg-pink-500/10 px-2 py-0.5">
+    <div className="sticky top-16 md:top-20 z-30 mb-4 border-b border-neutral-800 bg-gray-900/90 backdrop-blur supports-[backdrop-filter]:bg-gray-900/70">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 py-2.5">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <span className="text-[11px] sm:text-xs text-pink-300 rounded-full border border-pink-500/30 bg-pink-500/10 px-2 py-0.5">
             Starter Path: Step {idx + 1} of {STARTER_SLUGS.length}
           </span>
 
-          <div className="ml-2 hidden h-2 w-40 overflow-hidden rounded-full bg-neutral-800 sm:block">
+          <div className="hidden sm:block ml-1 h-2 w-40 overflow-hidden rounded-full bg-neutral-800">
             <div
               className="h-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500"
               style={{ width: `${pct}%` }}
             />
           </div>
-          <span className="hidden text-xs text-gray-400 sm:block">
+          <span className="hidden sm:block text-xs text-gray-400">
             {pct}% complete
           </span>
 
@@ -71,7 +93,7 @@ function StarterRibbon({ slug }) {
             {prev && (
               <Link
                 to={`/resources/${prev}`}
-                className="rounded-md border border-neutral-700 bg-neutral-950 px-2.5 py-1 text-xs text-neutral-300 hover:border-neutral-600"
+                className="rounded-md border border-neutral-700 bg-neutral-950 px-2.5 py-1 text-[11px] sm:text-xs text-neutral-300 hover:border-neutral-600"
               >
                 ← Prev
               </Link>
@@ -80,7 +102,7 @@ function StarterRibbon({ slug }) {
             <button
               type="button"
               onClick={handleToggle}
-              className={`rounded-md border px-2.5 py-1 text-xs transition ${
+              className={`rounded-md border px-2.5 py-1 text-[11px] sm:text-xs transition ${
                 done
                   ? "border-pink-500/40 bg-pink-500/10 text-pink-300 hover:border-pink-500/60"
                   : "border-neutral-700 bg-neutral-950 text-neutral-300 hover:border-neutral-600"
@@ -92,7 +114,7 @@ function StarterRibbon({ slug }) {
             {next && (
               <Link
                 to={`/resources/${next}`}
-                className="rounded-md bg-orange-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-orange-700"
+                className="rounded-md bg-orange-600 px-2.5 py-1 text-[11px] sm:text-xs font-semibold text-white hover:bg-orange-700"
               >
                 Next →
               </Link>
@@ -111,7 +133,6 @@ export default function ResourceDetail() {
   const articleRef = useRef(null);
   const [toc, setToc] = useState([]);
 
-  // Generate table of contents from headings in the article
   useEffect(() => {
     const root = articleRef.current;
     if (!root) return;
@@ -125,15 +146,12 @@ export default function ResourceDetail() {
       const text = (el.textContent || "").trim();
       if (!text) return;
 
-      // Generate a slug ID from the text
       let baseId = text
         .toLowerCase()
         .replace(/[^\w]+/g, "-")
         .replace(/(^-|-$)/g, "");
 
-      if (!baseId) {
-        baseId = "section";
-      }
+      if (!baseId) baseId = "section";
 
       let id = baseId;
       let counter = 1;
@@ -143,7 +161,6 @@ export default function ResourceDetail() {
       usedIds.add(id);
 
       el.setAttribute("id", id);
-
       items.push({ id, text, level });
     });
 
@@ -164,13 +181,13 @@ export default function ResourceDetail() {
     const { meta, Content } = mdxGuide;
 
     return (
-      <div className="min-h-screen bg-gray-900 text-white py-24 px-6">
-        <div className="max-w-6xl mx-auto">
+      <div className="bg-gray-900 text-white py-10 sm:py-12 lg:py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Back link */}
-          <div className="mb-4 max-w-3xl">
+          <div className="mb-3 sm:mb-4 max-w-3xl">
             <Link
               to="/resources"
-              className="text-gray-400 hover:text-orange-400"
+              className="text-xs sm:text-sm text-gray-400 hover:text-orange-400"
             >
               ← Back to Resources
             </Link>
@@ -178,12 +195,12 @@ export default function ResourceDetail() {
 
           <StarterRibbon slug={slug} />
 
-          <div className="flex flex-col lg:flex-row gap-10">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
             {/* Main content */}
             <div className="flex-1 min-w-0 max-w-3xl">
               {/* Header */}
               <div className="mb-6">
-                <div className="flex flex-wrap items-center gap-2 text-xs text-gray-400">
+                <div className="flex flex-wrap items-center gap-2 text-[11px] sm:text-xs text-gray-400">
                   {meta.category && (
                     <span className="rounded-full border border-gray-700 bg-gray-800 px-2 py-0.5">
                       {meta.category}
@@ -197,33 +214,37 @@ export default function ResourceDetail() {
                     </>
                   )}
                 </div>
-                <h1 className="mt-2 text-4xl font-extrabold">
+                <h1 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-extrabold">
                   {meta.title}
                 </h1>
                 {meta.description && (
-                  <p className="mt-2 text-gray-300">{meta.description}</p>
+                  <p className="mt-2 text-sm sm:text-base text-gray-300">
+                    {meta.description}
+                  </p>
                 )}
               </div>
 
-              {/* Body with ref for TOC scanning */}
+              {/* Body */}
               <article
                 ref={articleRef}
-                className="prose prose-invert max-w-none prose-headings:scroll-mt-24"
+                className="prose prose-invert max-w-none prose-headings:scroll-mt-28 prose-img:max-w-full prose-img:h-auto"
               >
                 <Content components={mdxComponents} />
               </article>
 
               {/* Downloads */}
               {Array.isArray(meta.downloads) && meta.downloads.length > 0 && (
-                <div className="mt-10 space-y-3">
-                  <h3 className="text-xl font-semibold">Downloads</h3>
+                <div className="mt-8 sm:mt-10 space-y-3">
+                  <h3 className="text-lg sm:text-xl font-semibold">
+                    Downloads
+                  </h3>
                   <ul className="space-y-2">
                     {meta.downloads.map((d, i) => (
                       <li key={i}>
                         <a
                           href={d.file}
                           download
-                          className="inline-flex items-center rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm hover:border-orange-500"
+                          className="inline-flex items-center rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-xs sm:text-sm hover:border-orange-500"
                         >
                           📥 {d.label || d.file}
                         </a>
@@ -233,10 +254,10 @@ export default function ResourceDetail() {
                 </div>
               )}
 
-              <div className="mt-12">
+              <div className="mt-10 sm:mt-12">
                 <Link
                   to="/resources"
-                  className="text-gray-400 hover:text-orange-400"
+                  className="text-xs sm:text-sm text-gray-400 hover:text-orange-400"
                 >
                   ← Back to Resources
                 </Link>
@@ -281,22 +302,21 @@ export default function ResourceDetail() {
 
   if (!resource) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
-        <p className="text-lg text-gray-400">
+      <div className="min-h-[50vh] bg-gray-900 text-white flex items-center justify-center px-4">
+        <p className="text-sm sm:text-lg text-gray-400">
           ❌ Resource not found for slug: {slug}
         </p>
       </div>
     );
   }
 
-  // For JSON resources, we reuse the same layout + TOC
   return (
-    <div className="min-h-screen bg-gray-900 text-white py-24 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-4 max-w-3xl">
+    <div className="bg-gray-900 text-white py-10 sm:py-12 lg:py-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-3 sm:mb-4 max-w-3xl">
           <Link
             to="/resources"
-            className="text-gray-400 hover:text-orange-400"
+            className="text-xs sm:text-sm text-gray-400 hover:text-orange-400"
           >
             ← Back to Resources
           </Link>
@@ -304,29 +324,29 @@ export default function ResourceDetail() {
 
         <StarterRibbon slug={slug} />
 
-        <div className="flex flex-col lg:flex-row gap-10">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
           {/* Main content */}
           <div className="flex-1 min-w-0 max-w-3xl">
-            {/* Title & Category */}
-            <h1 className="text-4xl font-extrabold mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-3 sm:mb-4">
               {resource.title}
             </h1>
-            <span className="inline-block text-sm font-semibold text-orange-400 mb-6">
+            <span className="inline-block text-xs sm:text-sm font-semibold text-orange-400 mb-6">
               {resource.category}
             </span>
 
-            {/* Downloads */}
             {Array.isArray(resource.downloads) &&
               resource.downloads.length > 0 && (
-                <div className="mb-8">
-                  <h3 className="text-xl font-semibold mb-2">Downloads</h3>
+                <div className="mb-6 sm:mb-8">
+                  <h3 className="text-lg sm:text-xl font-semibold mb-2">
+                    Downloads
+                  </h3>
                   <ul className="space-y-2">
                     {resource.downloads.map((d, i) => (
                       <li key={i}>
                         <a
                           href={d.file}
                           download
-                          className="inline-flex items-center rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm hover:border-orange-500"
+                          className="inline-flex items-center rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-xs sm:text-sm hover:border-orange-500"
                         >
                           📥 {d.label || d.file}
                         </a>
@@ -336,25 +356,24 @@ export default function ResourceDetail() {
                 </div>
               )}
 
-            {/* Sections in article for TOC */}
             <article
               ref={articleRef}
-              className="space-y-10 prose prose-invert max-w-none prose-headings:scroll-mt-24"
+              className="space-y-8 sm:space-y-10 prose prose-invert max-w-none prose-headings:scroll-mt-28 prose-img:max-w-full prose-img:h-auto"
             >
               {resource.sections?.map((section, idx) => (
                 <div key={idx}>
                   {section.heading && (
-                    <h2 className="text-2xl font-bold text-orange-400 mb-3">
+                    <h2 className="text-xl sm:text-2xl font-bold text-orange-400 mb-3">
                       {section.heading}
                     </h2>
                   )}
                   {section.text && (
-                    <div className="text-gray-300 leading-relaxed [&_a]:text-orange-400 [&_a:hover]:underline">
+                    <div className="text-sm sm:text-base text-gray-300 leading-relaxed [&_a]:text-orange-400 [&_a:hover]:underline break-words">
                       <ReactMarkdown>{section.text}</ReactMarkdown>
                     </div>
                   )}
                   {section.list && (
-                    <ul className="list-disc list-inside space-y-2 text-gray-300">
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-gray-300">
                       {section.list.map((item, i) => (
                         <li key={i}>{item}</li>
                       ))}
@@ -364,17 +383,17 @@ export default function ResourceDetail() {
                     <img
                       src={section.image}
                       alt={section.heading || "Resource illustration"}
-                      className="rounded-lg shadow-lg mt-4"
+                      className="mt-4 w-full h-auto rounded-lg shadow-lg"
                     />
                   )}
                 </div>
               ))}
             </article>
 
-            <div className="mt-12">
+            <div className="mt-10 sm:mt-12">
               <Link
                 to="/resources"
-                className="text-gray-400 hover:text-orange-400 transition"
+                className="text-xs sm:text-sm text-gray-400 hover:text-orange-400 transition"
               >
                 ← Back to Resources
               </Link>

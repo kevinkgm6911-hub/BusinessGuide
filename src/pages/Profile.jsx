@@ -17,14 +17,12 @@ export default function Profile() {
   const [status, setStatus] = useState("");
   const [saving, setSaving] = useState(false);
 
-  // If not logged in, redirect or show message
   useEffect(() => {
     if (!loading && !user) {
-      nav("/start"); // or "/"
+      nav("/start");
     }
   }, [loading, user, nav]);
 
-  // Load existing profile
   useEffect(() => {
     if (!user) return;
 
@@ -75,7 +73,6 @@ export default function Profile() {
       notes: form.notes || null,
     };
 
-    // Upsert by user_id
     const { error } = await supabase
       .from("user_profiles")
       .upsert(payload, { onConflict: "user_id" });
@@ -84,34 +81,37 @@ export default function Profile() {
       console.error("Error saving profile", error);
       setStatus("Error saving profile. Please try again.");
     } else {
-      setStatus("Profile saved. The coach will use this to personalize responses.");
+      setStatus(
+        "Profile saved. The coach will use this to personalize responses."
+      );
     }
     setSaving(false);
   }
 
   if (loading || !user) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
-        <p className="text-gray-300">Loading…</p>
+      <div className="min-h-[50vh] flex items-center justify-center px-4 text-gray-300">
+        <p>Loading…</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white py-24 px-6">
-      <div className="mx-auto max-w-3xl">
-        <h1 className="text-4xl font-extrabold mb-2">Your Profile</h1>
-        <p className="text-gray-300 mb-6">
-          This is what the Side Hustle Starter Coach knows about you. Update it to get more tailored advice.
+    <div className="py-10 sm:py-12 lg:py-16">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-gray-100">
+        <h1 className="text-3xl sm:text-4xl font-extrabold mb-2">
+          Your Profile
+        </h1>
+        <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">
+          This is what the Side Hustle Starter Coach knows about you. Update it
+          to get more tailored advice.
         </p>
 
         {status && (
-          <div className="mb-4 text-sm text-gray-300">
-            {status}
-          </div>
+          <div className="mb-4 text-xs sm:text-sm text-gray-300">{status}</div>
         )}
 
-        <form onSubmit={handleSave} className="space-y-5">
+        <form onSubmit={handleSave} className="space-y-4 sm:space-y-5">
           <div>
             <label className="block text-sm font-medium text-gray-200 mb-1">
               Name or what you prefer to be called
@@ -122,7 +122,7 @@ export default function Profile() {
               onChange={(e) =>
                 setForm((f) => ({ ...f, display_name: e.target.value }))
               }
-              className="w-full rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full rounded-lg bg-gray-900 border border-gray-700 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="Example: Kevin, Kev, or your business name"
             />
           </div>
@@ -136,7 +136,7 @@ export default function Profile() {
               onChange={(e) =>
                 setForm((f) => ({ ...f, experience_level: e.target.value }))
               }
-              className="w-full rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full rounded-lg bg-gray-900 border border-gray-700 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
             >
               <option value="">Select one…</option>
               <option value="complete beginner">Complete beginner</option>
@@ -144,7 +144,9 @@ export default function Profile() {
               <option value="have a small business already">
                 I already have a small business
               </option>
-              <option value="experienced entrepreneur">Experienced entrepreneur</option>
+              <option value="experienced entrepreneur">
+                Experienced entrepreneur
+              </option>
             </select>
           </div>
 
@@ -158,7 +160,7 @@ export default function Profile() {
               onChange={(e) =>
                 setForm((f) => ({ ...f, focus_area: e.target.value }))
               }
-              className="w-full rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full rounded-lg bg-gray-900 border border-gray-700 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="Example: Etsy merch, freelance design, digital products, local services"
             />
           </div>
@@ -173,7 +175,7 @@ export default function Profile() {
               onChange={(e) =>
                 setForm((f) => ({ ...f, current_goal: e.target.value }))
               }
-              className="w-full rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full rounded-lg bg-gray-900 border border-gray-700 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="Example: make $300/month, launch my first offer, get 5 paying clients"
             />
           </div>
@@ -188,7 +190,7 @@ export default function Profile() {
               onChange={(e) =>
                 setForm((f) => ({ ...f, notes: e.target.value }))
               }
-              className="w-full rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full rounded-lg bg-gray-900 border border-gray-700 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="Constraints, schedule, preferences, neurodivergence, anything that affects how you like to work."
             />
           </div>

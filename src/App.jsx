@@ -18,92 +18,106 @@ import Profile from "./pages/Profile";
 
 import TestHero from "./components/TestHero";
 import CoachWidget from "./components/CoachWidget";
+import StarterHeaderBar from "./components/StarterHeaderBar";
 
 function App() {
   return (
     <Router>
-      <ScrollToTop />
-      <Header />
+      <div className="min-h-screen bg-gray-950 text-gray-100">
+        <ScrollToTop />
+        <Header />
 
-      <Routes>
-        {/* Landing Page */}
-        <Route
-          path="/"
-          element={
-            <>
-              <Hero />
-              <Funnel />
-              <ResourceHighlight />
-              <CommunityBlock />
-              <Footer />
-            </>
-          }
-        />
+        {/* 
+          Push content below the fixed header.
+          Adjust these values if you tweak the header height later.
+        */}
+        <div className="pt-16 md:pt-20">
+          {/* Starter path header bar sits under the main header */}
+          <StarterHeaderBar />
 
-        {/* Resource Hub */}
-        <Route
-          path="/resources"
-          element={
-            <>
-              <ResourceHub />
-              <Footer />
-            </>
-          }
-        />
+          <main className="pb-10">
+            <Routes>
+              {/* Landing Page */}
+              <Route
+                path="/"
+                element={
+                  <>
+                    <Hero />
+                    <Funnel />
+                    <ResourceHighlight />
+                    <CommunityBlock />
+                    <Footer />
+                  </>
+                }
+              />
 
-        {/* Resource Detail */}
-        <Route path="/resources/:slug" element={<ResourceDetail />} />
+              {/* Resource Hub */}
+              <Route
+                path="/resources"
+                element={
+                  <>
+                    <ResourceHub />
+                    <Footer />
+                  </>
+                }
+              />
 
-        {/* Start Here (Starter Path overview) */}
-        <Route
-          path="/start"
-          element={
-            <>
-              <StartHere />
-              <Footer />
-            </>
-          }
-        />
+              {/* Resource Detail */}
+              <Route path="/resources/:slug" element={<ResourceDetail />} />
 
-        {/* Community */}
-        <Route
-          path="/community"
-          element={
-            <>
-              <Community />
-              <Footer />
-            </>
-          }
-        />
+              {/* Start Here (Starter Path overview) */}
+              <Route
+                path="/start"
+                element={
+                  <>
+                    <StartHere />
+                    <Footer />
+                  </>
+                }
+              />
 
-        {/* Profile */}
-        <Route
-          path="/profile"
-          element={
-            <>
-              <Profile />
-              <Footer />
-            </>
-          }
-        />
+              {/* Community */}
+              <Route
+                path="/community"
+                element={
+                  <>
+                    <Community />
+                    <Footer />
+                  </>
+                }
+              />
 
-        {/* About */}
-        <Route
-          path="/about"
-          element={
-            <>
-              <About />
-              <Footer />
-            </>
-          }
-        />
+              {/* Profile */}
+              <Route
+                path="/profile"
+                element={
+                  <>
+                    <Profile />
+                    <Footer />
+                  </>
+                }
+              />
 
-        {/* Temporary 3D Test */}
-        <Route path="/test3d" element={<TestHero />} />
-      </Routes>
+              {/* About */}
+              <Route
+                path="/about"
+                element={
+                  <>
+                    <About />
+                    <Footer />
+                  </>
+                }
+              />
 
-      {/* Global coach widget */}
-      <CoachWidget />
+              {/* Temporary 3D Test */}
+              <Route path="/test3d" element={<TestHero />} />
+            </Routes>
+          </main>
+        </div>
+
+        {/* Global coach widget (can become a mobile bottom sheet later) */}
+        <CoachWidget />
+      </div>
     </Router>
   );
 }
