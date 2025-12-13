@@ -1,4 +1,6 @@
 // src/components/CommunityBlock.jsx
+const DISCORD_INVITE = "https://discord.gg/xavjmPUtas";
+
 export default function CommunityBlock() {
   return (
     <section
@@ -25,23 +27,49 @@ export default function CommunityBlock() {
 
       <div className="relative z-10 py-12 sm:py-16 lg:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-4 text-white">
             🚀 Join Our Community
           </h2>
           <p className="max-w-2xl mx-auto mb-8 text-sm sm:text-base md:text-lg text-gray-300">
-            Get exclusive resources, connect with fellow entrepreneurs, and
-            never miss an update.
+            Get resources, ask questions, share wins, and build alongside other
+            first-time entrepreneurs.
           </p>
 
           {/* Grid */}
           <div className="grid gap-8 md:grid-cols-2 max-w-5xl mx-auto items-stretch">
             {/* Discord Card */}
             <div className="flex flex-col bg-gray-800 rounded-xl p-5 sm:p-6 shadow-lg">
-              <h3 className="text-xl sm:text-2xl font-bold mb-3">💬 Our Discord</h3>
-              <p className="text-gray-300 mb-5 text-sm sm:text-base">
-                Chat with entrepreneurs, share wins, and get feedback in real
-                time.
-              </p>
+              <div className="flex items-start justify-between gap-4 mb-3">
+                <div className="text-left">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white">
+                    💬 Our Discord
+                  </h3>
+                  <p className="text-gray-300 mt-2 text-sm sm:text-base">
+                    Chat with entrepreneurs, share resources, and get feedback in
+                    real time.
+                  </p>
+                </div>
+              </div>
+
+              {/* Join button */}
+              <div className="mt-2 mb-5 flex flex-col sm:flex-row gap-3">
+                <a
+                  href={DISCORD_INVITE}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 px-5 py-3 text-sm sm:text-base font-semibold text-white shadow-lg shadow-orange-500/30 hover:opacity-95 transition"
+                >
+                  Join Discord →
+                </a>
+                <a
+                  href="/community"
+                  className="inline-flex items-center justify-center rounded-xl border border-gray-700 bg-gray-900 px-5 py-3 text-sm sm:text-base font-semibold text-gray-100 hover:border-gray-600 transition"
+                >
+                  What to do inside →
+                </a>
+              </div>
+
+              {/* Preview widget */}
               <div className="rounded-lg overflow-hidden shadow-lg border border-gray-700 flex-1">
                 <iframe
                   src="https://discord.com/widget?id=1421217420210733108&theme=dark"
@@ -54,30 +82,58 @@ export default function CommunityBlock() {
                   title="Side Hustle Starter Discord"
                 />
               </div>
+
+              <p className="mt-3 text-left text-xs text-gray-400">
+                Tip: Introduce yourself and post your idea in <span className="text-gray-200">#start-here</span>.
+              </p>
             </div>
 
             {/* Email Card */}
-            <div className="flex flex-col bg-gray-800 rounded-xl p-5 sm:p-6 shadow-lg">
-              <h3 className="text-xl sm:text-2xl font-bold mb-3">📬 Stay in the Loop</h3>
+            <div
+              id="newsletter"
+              className="flex flex-col bg-gray-800 rounded-xl p-5 sm:p-6 shadow-lg"
+            >
+              <h3 className="text-xl sm:text-2xl font-bold mb-3 text-white">
+                📬 Email Updates
+              </h3>
               <p className="text-gray-300 mb-5 text-sm sm:text-base">
-                Get updates on new resources and guides straight to your inbox.
+                Weekly-ish updates when new guides, templates, and improvements drop.
               </p>
+
               <div className="flex-1 flex flex-col justify-end">
-                <form>
-                  <input
-                    type="email"
-                    placeholder="Enter your email..."
-                    disabled
-                    className="w-full px-4 py-2.5 sm:py-3 rounded-lg bg-gray-700 border border-gray-600 text-gray-400 text-sm sm:text-base cursor-not-allowed"
-                  />
-                  <button
-                    type="button"
-                    disabled
-                    className="w-full mt-3 sm:mt-4 px-6 py-2.5 sm:py-3 rounded-lg bg-gray-600 text-gray-400 text-sm sm:text-base cursor-not-allowed"
-                  >
-                    Coming Soon ⏳
-                  </button>
-                </form>
+                <div className="rounded-xl border border-pink-500/25 bg-pink-500/10 p-4 text-left">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">⏳</span>
+                    <p className="text-sm sm:text-base font-semibold text-pink-200">
+                      Coming soon
+                    </p>
+                  </div>
+                  <p className="mt-2 text-sm text-gray-300">
+                    Email signup is being wired up next. For now, the best way to
+                    stay close is the Discord.
+                  </p>
+
+                  <div className="mt-4 flex flex-col sm:flex-row gap-3">
+                    <a
+                      href={DISCORD_INVITE}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center justify-center rounded-xl bg-orange-600 px-5 py-3 text-sm sm:text-base font-semibold text-white hover:bg-orange-700 transition"
+                    >
+                      Join Discord →
+                    </a>
+                    <a
+                      href="/resources"
+                      className="inline-flex items-center justify-center rounded-xl border border-gray-700 bg-gray-900 px-5 py-3 text-sm sm:text-base font-semibold text-gray-100 hover:border-gray-600 transition"
+                    >
+                      Browse Guides →
+                    </a>
+                  </div>
+                </div>
+
+                <p className="mt-3 text-left text-xs text-gray-400">
+                  When email launches, we’ll keep it practical. No spam, no hustle-culture.
+                </p>
               </div>
             </div>
           </div>

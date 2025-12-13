@@ -20,6 +20,7 @@ export const meta = {
 import TipBox from "@/components/TipBox";
 import DownloadCard from "@/components/DownloadCard";
 import Checklist from "@/components/Checklist";
+import GuideCoach from "@/components/GuideCoach";
 
 # Budgeting & Financial Setup for Beginners
 
@@ -59,9 +60,51 @@ Common beginner costs:
 - Product materials  
 - Marketing or ads  
 - Legal filings (LLC, DBA)  
-- Bank or payment fees
+- Bank or payment fees  
 
 Keep your total under control — aim for **under $200** to start if possible.
+
+---
+
+<GuideCoach
+  title="Set up your finances the simple way"
+  subtitle="Tell me what kind of side hustle you’re starting. I’ll help you decide what accounts to open, what to track, and how to keep this lightweight."
+  guideSlug={meta.slug}
+  guideTitle={meta.title}
+  guideGoal="Help the user set up a simple, beginner-friendly financial system: separate accounts, basic tracking, and clear tax and savings buckets."
+  seedPrompts={[
+    {
+      id: "accounts",
+      label: "What accounts do I need?",
+      prompt:
+        "Help me decide what financial accounts I actually need for my side hustle. Ask what I’m selling, how I get paid, and my country. Then recommend a simple setup.",
+    },
+    {
+      id: "startup-costs",
+      label: "Estimate my startup costs",
+      prompt:
+        "Help me list realistic startup costs for my side hustle. Ask what I’m selling and how I’ll deliver it, then suggest a lean setup under $200 if possible.",
+    },
+    {
+      id: "tracking",
+      label: "How should I track money?",
+      prompt:
+        "Help me choose a simple way to track income and expenses. Ask how often I want to check finances and whether I prefer spreadsheets or apps.",
+    },
+    {
+      id: "taxes",
+      label: "How much should I save for taxes?",
+      prompt:
+        "Help me estimate how much to save for taxes. Ask what country I’m in and whether this is extra income or my main income.",
+    },
+    {
+      id: "weekly",
+      label: "Create a weekly money routine",
+      prompt:
+        "Help me create a 10-minute weekly money check-in routine. I want a simple checklist I can repeat every week.",
+    },
+  ]}
+/>
 
 ---
 
@@ -71,9 +114,9 @@ You don’t need accounting software yet.
 Start with a single **Budget Tracker** (see template below).
 
 Track just three things:
-1. Income (what came in)
-2. Expenses (what went out)
-3. Balance (what’s left)
+1. Income (what came in)  
+2. Expenses (what went out)  
+3. Balance (what’s left)  
 
 That’s enough to make smart decisions.
 
@@ -93,14 +136,17 @@ If you start earning $1,000+ monthly, consider moving to Wave, QuickBooks, or No
 ## Step 4 — Set Up Your Savings & Tax Buckets
 
 A simple rule:  
-**Save 25% of every payment for taxes** (you’ll thank yourself later).  
-If possible, open a separate “Tax” savings account and move the money weekly.
+**Save 25% of every payment for taxes** (you’ll thank yourself later).
 
-For savings:
+If possible:
+- Open a separate “Tax” savings account  
+- Transfer money weekly or after each payment  
+
+Suggested split:
 - 25% → Taxes  
-- 10% → Reinvestment (gear, ads, upgrades)  
+- 10% → Reinvestment  
 - 5% → Emergency cushion  
-- Keep the rest to pay yourself or cover expenses
+- The rest → Pay yourself or cover expenses  
 
 Even small deposits create peace of mind.
 

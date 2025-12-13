@@ -20,6 +20,7 @@ export const meta = {
 import TipBox from "@/components/TipBox";
 import Checklist from "@/components/Checklist";
 import DownloadCard from "@/components/DownloadCard";
+import GuideCoach from "@/components/GuideCoach";
 
 # Name, Brand & Simple Logo Design
 
@@ -46,7 +47,7 @@ Ask yourself:
 Try mixing:
 - **Concept + Outcome** → “GrowthGuide”, “CraftCoach”  
 - **Descriptor + Personality** → “Honest Design”, “Bold Brew”  
-- **Playful tweaks** → real words with new endings or combos
+- **Playful tweaks** → real words with new endings or combos  
 
 <TipBox title="Quick filters">
 If you can’t spell it or say it easily, skip it.  
@@ -57,7 +58,49 @@ If you smile when you say it, keep it.
 When you have 3–5 options:
 1. Check domain availability (`namecheap.com`, `vercel.domains`)  
 2. Check Instagram & TikTok usernames  
-3. Ask 3 friends which name sounds most “you”
+3. Ask 3 friends which name sounds most “you”  
+
+---
+
+<GuideCoach
+  title="Get help naming and branding your side hustle"
+  subtitle="Tell me what you’re making and who it’s for. I’ll help you brainstorm names, define your vibe, and choose a simple brand direction you can actually use."
+  guideSlug={meta.slug}
+  guideTitle={meta.title}
+  guideGoal="Help the user choose a clear name, define brand personality, and select a simple color/type direction that matches their audience and offer."
+  seedPrompts={[
+    {
+      id: "names",
+      label: "Brainstorm name ideas",
+      prompt:
+        "Help me come up with 10–15 name ideas for my side hustle. Ask what I sell, who it’s for, and the vibe I want. Then give options that are easy to say and spell, plus a short tagline idea for the best 3.",
+    },
+    {
+      id: "narrow",
+      label: "Pick the best name from my list",
+      prompt:
+        "I have a short list of names. Help me choose the best one. Ask me for the list, what I sell, and my audience. Then rank them and explain why, including clarity and memorability.",
+    },
+    {
+      id: "personality",
+      label: "Define my brand personality",
+      prompt:
+        "Help me define my brand personality. Ask what I’m selling, what I want customers to feel, and what brands I like. Then suggest 3 adjectives, a tone of voice, and 3 example sentences in that voice.",
+    },
+    {
+      id: "colors",
+      label: "Choose colors and fonts",
+      prompt:
+        "Help me pick a simple color palette and font pairing for my brand. Ask my vibe (modern, warm, premium, playful), where it will show up (Etsy, Instagram, website), and whether I prefer light or dark backgrounds. Then recommend 1 primary, 1 neutral, and 1 accent plus font suggestions.",
+    },
+    {
+      id: "logo",
+      label: "Plan a simple logo",
+      prompt:
+        "Help me plan a simple logo I can create in Canva. Ask my name (or name options), vibe, and whether I want an icon. Then recommend 2–3 simple logo concepts (text-only, icon + wordmark, badge) and how to build them.",
+    },
+  ]}
+/>
 
 ---
 
@@ -92,13 +135,13 @@ You don’t need a design degree to look cohesive — just a clear palette.
 Tools:
 - [Coolors.co](https://coolors.co) → auto-generate palettes  
 - [Khroma.co](https://khroma.co) → font + color matching  
-- [BrandColors.net](https://brandcolors.net) → see real examples
+- [BrandColors.net](https://brandcolors.net) → see real examples  
 
 **Font Pairing:**  
 Use one clean headline font + one readable body font.  
 Try Google Fonts:  
 - Headline → *Poppins*, *Raleway*, or *League Spartan*  
-- Body → *Inter*, *Open Sans*, or *Source Sans Pro*
+- Body → *Inter*, *Open Sans*, or *Source Sans Pro*  
 
 ---
 

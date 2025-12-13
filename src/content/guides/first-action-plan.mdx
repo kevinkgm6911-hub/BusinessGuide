@@ -20,6 +20,7 @@ export const meta = {
 import TipBox from "@/components/TipBox";
 import Checklist from "@/components/Checklist";
 import DownloadCard from "@/components/DownloadCard";
+import GuideCoach from "@/components/GuideCoach";
 
 # From Idea to First Action Plan
 
@@ -64,6 +65,48 @@ Use a 4-week sprint layout:
   description="A visual worksheet to break your month into four focused weeks, track wins, and remove blockers."
   file="/downloads/30-day-action-plan.xlsx"
   note="Available in Google Sheets soon."
+/>
+
+---
+
+<GuideCoach
+  title="Build your 30-day plan"
+  subtitle="Tell me your idea and your time per week. I’ll help you pick a realistic 30-day outcome, define 4 weekly milestones, and choose simple metrics."
+  guideSlug={meta.slug}
+  guideTitle={meta.title}
+  guideGoal="Help the user convert a side hustle idea into a realistic 30-day outcome, 4 weekly milestones, and a simple tracking routine."
+  seedPrompts={[
+    {
+      id: "outcome",
+      label: "Pick my 30-day outcome",
+      prompt:
+        "Help me pick ONE realistic 30-day outcome for my side hustle. Ask me: my idea, hours/week, and what success would feel like. Then propose 3 outcome options and help me choose.",
+    },
+    {
+      id: "milestones",
+      label: "Make my 4-week milestones",
+      prompt:
+        "Turn my idea into a 4-week plan. Ask me what I’m building or selling and how many hours/week I have. Then give me Week 1–4 milestones with 2–3 tasks each.",
+    },
+    {
+      id: "metrics",
+      label: "Choose metrics to track",
+      prompt:
+        "Help me choose 2–3 weekly metrics for my 30-day plan. Give me leading vs lagging metrics, and recommend which ones fit my idea and stage.",
+    },
+    {
+      id: "powerhour",
+      label: "Create my weekly routine",
+      prompt:
+        "Help me create a weekly 'Side Hustle Power Hour' routine. I want a repeatable checklist for each week, plus what to do when I fall behind.",
+    },
+    {
+      id: "blockers",
+      label: "Identify blockers + fixes",
+      prompt:
+        "Help me identify the top 3 blockers that might derail my plan, and give me practical fixes. Ask me about my schedule, confidence, and what usually stops me from starting.",
+    },
+  ]}
 />
 
 ---

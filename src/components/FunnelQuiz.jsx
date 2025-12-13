@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const questions = [
   {
@@ -23,55 +24,16 @@ const questions = [
   },
 ];
 
-function getRecommendation(answers) {
-  const [goal, budget] = answers;
-
-  if (goal === "Start a side hustle for extra income" && budget === "$0–$100") {
-    return {
-      title: "Quick Wins Side Hustles",
-      description:
-        "Low-cost, fast-start ideas you can launch this month to generate extra cash.",
-      link: "/quick-wins-guide.pdf",
-    };
-  }
-
-  if (goal === "Turn a hobby into a business") {
-    return {
-      title: "Turn Your Passion into Income Guide",
-      description:
-        "Learn how to validate your hobby, build your first audience, and earn your first sales.",
-      link: "/hobby-to-business-guide.pdf",
-    };
-  }
-
-  if (goal === "Go full-time entrepreneur") {
-    return {
-      title: "Business Plan & Funding Toolkit",
-      description:
-        "A complete template and resource pack to plan, pitch, and secure funding.",
-      link: "/business-plan-toolkit.pdf",
-    };
-  }
-
-  return {
-    title: "Side Hustle Starter Guide",
-    description: "Covers the exact first steps to start a small business.",
-    link: "/starter-guide.pdf",
-  };
-}
-
 export default function FunnelQuiz() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState([]);
 
   const handleAnswer = (answer) => {
-    const newAnswers = [...answers, answer];
-    setAnswers(newAnswers);
+    const nextAnswers = [...answers, answer];
+    setAnswers(nextAnswers);
 
-    if (step < questions.length - 1) {
+    if (step < questions.length) {
       setStep(step + 1);
-    } else {
-      setStep(step + 1); // show results
     }
   };
 
@@ -84,12 +46,13 @@ export default function FunnelQuiz() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.45 }}
             className="bg-gray-700 p-8 rounded-2xl shadow-lg text-white"
           >
             <h3 className="text-2xl font-bold mb-6">
               {questions[step].text}
             </h3>
+
             <div className="flex flex-col gap-4">
               {questions[step].options.map((option, i) => (
                 <button
@@ -101,6 +64,7 @@ export default function FunnelQuiz() {
                 </button>
               ))}
             </div>
+
             <p className="mt-6 text-sm text-gray-300">
               Step {step + 1} of {questions.length}
             </p>
@@ -112,23 +76,28 @@ export default function FunnelQuiz() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6 }}
-            className="bg-gray-700 p-8 rounded-2xl shadow-lg text-white"
+            className="bg-gray-700 p-8 rounded-2xl shadow-lg text-white text-center"
           >
-            {(() => {
-              const rec = getRecommendation(answers);
-              return (
-                <>
-                  <h3 className="text-3xl font-bold mb-4">{rec.title}</h3>
-                  <p className="mb-6">{rec.description}</p>
-                  <a
-                    href={rec.link}
-                    className="px-6 py-3 rounded-xl bg-orange-600 hover:bg-orange-700 transition"
-                  >
-                    📥 Download Guide
-                  </a>
-                </>
-              );
-            })()}
+            <h3 className="text-3xl font-bold mb-4">
+              You’re in the right place
+            </h3>
+
+            <p className="mb-6 text-gray-200">
+              Based on your answers, the best next move is to follow a simple,
+              structured path that helps you go from idea → action → launch
+              without overthinking it.
+            </p>
+
+            <Link
+              to="/start"
+              className="inline-block px-8 py-4 rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 text-lg font-semibold text-white shadow-lg shadow-orange-500/30 hover:opacity-95 transition"
+            >
+              🚀 Start the Starter Path
+            </Link>
+
+            <p className="mt-4 text-xs text-gray-400">
+              Takes about 60–90 minutes total • No commitment required
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
